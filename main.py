@@ -133,6 +133,12 @@ try:
         time.sleep(0.1)
         server.send(f"/Cmd chat.command /ClearLooseEntities \"{player_username}\"")
         time.sleep(0.1)
+
+    time.sleep(5)
+    server.send("saving world..")
+    time.sleep(0.1)
+    server.send("/worlds save")
+    time.sleep(20)
 except KeyboardInterrupt:
     server.send("purge aborted!")
     time.sleep(3)
