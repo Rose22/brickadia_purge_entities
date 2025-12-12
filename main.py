@@ -15,13 +15,15 @@ import datetime
 
 # set your paths here
 PATH_SERVER = os.path.expanduser("~/servers/omegga")
-PATH_DATA = f"{PATH_SERVER}/data/Saved"
-PATH_CACHE_PLAYERS = f"{PATH_DATA}/Server/PlayerNameCache.json"
-PATH_ROLE_ASSIGNMENTS = f"{PATH_DATA}/Server/RoleAssignments.json"
 PATH_BACKUPS = os.path.expanduser(f"{PATH_SERVER}/world_backups")
 
 # name of your world file
 WORLD = "pinkadia.brdb"
+
+# automatic paths
+PATH_DATA = f"{PATH_SERVER}/data/Saved"
+PATH_CACHE_PLAYERS = f"{PATH_DATA}/Server/PlayerNameCache.json"
+PATH_ROLE_ASSIGNMENTS = f"{PATH_DATA}/Server/RoleAssignments.json"
 
 # create a role on your server for people whose entities to preserve,
 # then add the name of that role in here.
