@@ -131,8 +131,6 @@ try:
 
         server.send(f"/Cmd chat.command /ClearLooseEntities \"{player_id}\"")
         time.sleep(0.1)
-        server.send(f"/Cmd chat.command /ClearLooseEntities \"{player_username}\"")
-        time.sleep(0.1)
 
     time.sleep(5)
     server.send("saving world..")
