@@ -54,12 +54,12 @@ class Omegga:
 
 # retrieve player cache from json
 player_data = None
-with open(PATH_CACHE_PLAYERS, "r") as f:
-    try:
+try:
+    with open(PATH_CACHE_PLAYERS, "r") as f:
         player_data = json.loads(f.read())
-    except Exception as e:
-        print(f"could not parse player cache json: {e}")
-        exit(1)
+except Exception as e:
+    print(f"could not parse player cache json: {e}")
+    exit(1)
 
 if not "savedPlayerNames" in player_data.keys():
     print("invalid player data file!")
@@ -68,13 +68,13 @@ if not "savedPlayerNames" in player_data.keys():
 players = player_data.get("savedPlayerNames")
 
 # retrieve role assignment data from json
-player_role_data = None
-with open(PATH_ROLE_ASSIGNMENTS, "r") as f:
-    try:
-        player_role_data = json.loads(f.read())
-    except Exception as e:
-        print(f"could not parse player role json: {e}")
-        exit(1)
+try:
+    player_role_data = None
+    with open(PATH_ROLE_ASSIGNMENTS, "r") as f:
+            player_role_data = json.loads(f.read())
+except Exception as e:
+    print(f"could not parse player role json: {e}")
+    exit(1)
 
 if not "savedPlayerRoles" in player_role_data.keys():
     print("invalid player roles file!")
