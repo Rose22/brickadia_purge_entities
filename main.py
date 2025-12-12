@@ -87,10 +87,7 @@ for player_id, player_username in players.items():
 
     if player_roles:
         for role_name in player_roles:
-            if role_name in whitelisted_roles:
-                if player_id in preserve_ent_list:
-                    continue
-
+            if role_name in whitelisted_roles and player_id not in preserve_ent_list:
                 preserve_ent_list.append(player_id)
 
 # backup the world file
