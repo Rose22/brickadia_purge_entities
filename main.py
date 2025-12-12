@@ -128,7 +128,6 @@ try:
             continue
 
         server.send(f"purging entities by {player_username}..")
-
         server.send(f"/Cmd chat.command /ClearLooseEntities \"{player_id}\"")
         time.sleep(0.1)
 
