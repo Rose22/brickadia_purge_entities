@@ -119,6 +119,7 @@ try:
         print(count)
         time.sleep(1)
 
+    server.send("/debug")
     server.send("starting purge!")
 
     # now run the purge
@@ -128,7 +129,7 @@ try:
             continue
 
         server.send(f"purging entities by {player_username}..")
-        server.send(f"/Cmd chat.command /ClearLooseEntities \"{player_id}\"")
+        server.send(f"/cmd chat.command /ClearLooseEntities \"{player_id}\"")
         time.sleep(0.1)
 
     time.sleep(5)
