@@ -129,9 +129,9 @@ try:
 
         server.send(f"purging entities by {player_username}..")
 
-        server.send("/Cmd chat.command /ClearLooseEntities \"{player_id}\"")
+        server.send(f"/Cmd chat.command /ClearLooseEntities \"{player_id}\"")
         time.sleep(0.1)
-        server.send("/Cmd chat.command /ClearLooseEntities \"{player_username}\"")
+        server.send(f"/Cmd chat.command /ClearLooseEntities \"{player_username}\"")
         time.sleep(0.1)
 except KeyboardInterrupt:
     server.send("purge aborted!")
