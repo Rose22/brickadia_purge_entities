@@ -1,20 +1,34 @@
-# yaaaayyy!! pinkadia entity purge round 2!!!
+#!/bin/python
+
+# purges entities from a brickadia omegga server
+# uses a role whitelist to determine whose entities to keep
+# entities are one of the main sources of performance problems,
+# so this helps a lot with keeping a large freebuild server performant!
 
 import os
 import sys
 import json
 import subprocess
 import time
-from pprint import pprint
+import shutil
+import datetime
 
+# set your paths here
 PATH_SERVER = os.path.expanduser("~/servers/omegga")
 PATH_DATA = f"{PATH_SERVER}/data/Saved"
 PATH_CACHE_PLAYERS = f"{PATH_DATA}/Server/PlayerNameCache.json"
 PATH_ROLE_ASSIGNMENTS = f"{PATH_DATA}/Server/RoleAssignments.json"
+PATH_BACKUPS = os.path.expanduser(f"{PATH_SERVER}/world_backups")
 
+# name of your world file
+WORLD = "pinkadia.brdb"
+
+# create a role on your server for people whose entities to preserve,
+# then add the name of that role in here.
 whitelisted_roles = [
     "preserve_ents",
-    "Moderator"
+    "Moderator",
+    "Admin"
 ]
 
 # omegga wrapper class
@@ -39,22 +53,30 @@ class Omegga:
 # retrieve player cache from json
 player_data = None
 with open(PATH_CACHE_PLAYERS, "r") as f:
-    player_data = json.loads(f.read())
+    try:
+        player_data = json.loads(f.read())
+    except Exception as e:
+        print(f"could not parse player cache json: {e}")
+        exit(1)
 
 if not "savedPlayerNames" in player_data.keys():
-    print("error while parsing player name cache json!")
-    exit()
+    print("invalid player data file!")
+    exit(1)
 
 players = player_data.get("savedPlayerNames")
 
 # retrieve role assignment data from json
 player_role_data = None
 with open(PATH_ROLE_ASSIGNMENTS, "r") as f:
-    player_role_data = json.loads(f.read())
+    try:
+        player_role_data = json.loads(f.read())
+    except Exception as e:
+        print(f"could not parse player role json: {e}")
+        exit(1)
 
 if not "savedPlayerRoles" in player_role_data.keys():
-    print("error while parsing player roles json!")
-    exit()
+    print("invalid player roles file!")
+    exit(1)
 
 roles = player_role_data.get("savedPlayerRoles")
 
@@ -71,8 +93,26 @@ for player_id, player_username in players.items():
 
                 preserve_ent_list.append(player_id)
 
-os.chdir(PATH_SERVER)
+# backup the world file
+try:
+    world_name = os.path.splitext(WORLD)[0]
+    world_path = f"{PATH_DATA}/Worlds/{worldname}.brdb"
+    date_str = datetime.datetime.now().strftime("%d-%m-%Y")
+    world_backup_path = f"{PATH_BACKUPS}/{worldname}.pre_purge.{date_str}.brdb"
 
+    if not os.path.exists(world_path):
+        print("world file not found. could not make a backup. aborting for safety!")
+        exit(1)
+
+    print("creating world file backup..")
+    shutil.copy(world_path, world_backup_path)
+    print("backup complete!")
+except Exception as e:
+    print(f"error: could not create backup! {e}")
+    print("aborting for safety..")
+    exit(1)
+
+print ("starting omegga process..")
 server = Omegga(PATH_SERVER)
 server.run()
 
@@ -80,10 +120,6 @@ try:
     print("waiting for omegga server to start up..")
     for count in range(30, 1, -1):
         print(count)
-        time.sleep(1)
-
-    for count in range(60, 1, -1):
-        server.send(count)
         time.sleep(1)
 
     server.send("starting purge!")
@@ -96,9 +132,9 @@ try:
 
         server.send(f"purging entities by {player_username}..")
 
-        #server.send("/Cmd chat.command /ClearEntities \"{player_id}\"")
+        server.send("/Cmd chat.command /ClearLooseEntities \"{player_id}\"")
         time.sleep(0.1)
-        #server.send("/Cmd chat.command /ClearEntities \"{player_username}\"")
+        server.send("/Cmd chat.command /ClearLooseEntities \"{player_username}\"")
         time.sleep(0.1)
 except KeyboardInterrupt:
     server.send("purge aborted!")
