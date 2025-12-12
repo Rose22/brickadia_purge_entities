@@ -98,9 +98,9 @@ for player_id, player_username in players.items():
 # backup the world file
 try:
     world_name = os.path.splitext(WORLD)[0]
-    world_path = f"{PATH_DATA}/Worlds/{worldname}.brdb"
+    world_path = f"{PATH_DATA}/Worlds/{world_name}.brdb"
     date_str = datetime.datetime.now().strftime("%d-%m-%Y")
-    world_backup_path = f"{PATH_BACKUPS}/{worldname}.pre_purge.{date_str}.brdb"
+    world_backup_path = f"{PATH_BACKUPS}/{world_name}.pre_purge.{date_str}.brdb"
 
     if not os.path.exists(world_path):
         print("world file not found. could not make a backup. aborting for safety!")
