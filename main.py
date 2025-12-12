@@ -53,7 +53,6 @@ class Omegga:
         return result
 
 # retrieve player cache from json
-player_data = None
 try:
     with open(PATH_CACHE_PLAYERS, "r") as f:
         player_data = json.loads(f.read())
@@ -69,7 +68,6 @@ players = player_data.get("savedPlayerNames")
 
 # retrieve role assignment data from json
 try:
-    player_role_data = None
     with open(PATH_ROLE_ASSIGNMENTS, "r") as f:
             player_role_data = json.loads(f.read())
 except Exception as e:
